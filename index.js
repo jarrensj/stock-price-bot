@@ -70,7 +70,12 @@ const getStockPrice = async (tickerName) => {
       }
     );
     const json = await response.json();
-    return json.quoteResponse.result[0].regularMarketPrice;
+    const result = json.quoteResponse.result[0];
+    if (result.postMarketPrice && result.postMarketPrice !== null) {
+      return result.postMarketPrice;
+    } else {
+      return result.regularMarketPrice;
+    }
   } catch {
     return null;
   }
